@@ -60,4 +60,32 @@ public class CikWritable implements Writable , WritableComparable<CikWritable>{
     public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CikWritable)) return false;
+
+        CikWritable that = (CikWritable) o;
+
+        if (getiPinyouID() != null ? !getiPinyouID().equals(that.getiPinyouID()) : that.getiPinyouID() != null)
+            return false;
+        return getTimestamp() != null ? getTimestamp().equals(that.getTimestamp()) : that.getTimestamp() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getiPinyouID() != null ? getiPinyouID().hashCode() : 0;
+        result = 31 * result + (getTimestamp() != null ? getTimestamp().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CikWritable{" +
+                "iPinyouID='" + iPinyouID + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }
