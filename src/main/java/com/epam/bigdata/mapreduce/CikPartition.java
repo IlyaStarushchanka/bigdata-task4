@@ -7,10 +7,10 @@ import org.apache.hadoop.mapreduce.Partitioner;
 /**
  * Created by Ilya_Starushchanka on 9/7/2016.
  */
-public class CikPartition extends Partitioner<CikWritable, NullWritable> {
+public class CikPartition extends Partitioner<CikWritable, Text> {
 
     @Override
-    public int getPartition(CikWritable cikWritable, NullWritable nullWritable, int numPartitions) {
+    public int getPartition(CikWritable cikWritable, Text text, int numPartitions) {
         return cikWritable.getiPinyouID().hashCode() % numPartitions;
     }
 }
