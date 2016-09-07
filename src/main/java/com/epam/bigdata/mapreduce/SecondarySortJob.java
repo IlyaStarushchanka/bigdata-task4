@@ -6,9 +6,7 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
@@ -40,13 +38,24 @@ public class SecondarySortJob {
 
     public static class SortReduce extends Reducer<CikWritable, Text, NullWritable, Text>{
 
-        private IntWritable result = new IntWritable();
+        private int maxCounter = 0;
 
         @Override
         protected void reduce(CikWritable key, Iterable<Text> values,
                               Context context) throws IOException, InterruptedException {
+            int tempCounter = 0;
             for (Text text : values) {
                 context.write(NullWritable.get(), text);
+                String[] columns = text.toString().split("\\s+");
+                int streamId = Integer.parseInt(columns[columns.length - 1]);
+                if (streamId == 1){
+                    tempCounter++;
+                }
+            }
+
+            if (maxCounter <= tempCounter){
+                maxCounter = tempCounter;
+                context.getCounter("DinamicCounter",key.getiPinyouID()).setValue(maxCounter);
             }
         }
     }
@@ -79,7 +88,12 @@ public class SecondarySortJob {
         FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
 
         boolean result = job.waitForCompletion(true);
+        Counters counters = job.getCounters();
 
+        for (Counter counter : counters.getGroup("DynamicCounter")) {
+                System.out.println("iPinyou ID: " + counter.getName() + ", the biggest amount of site impression: " + counter.getValue());
+
+        }
         /*Counters counters = job.getCounters();
         Counter maxValueCounter = counters.getGroup(StreamIdType.class.getCanonicalName()).findCounter(StreamIdType.SITEIMPRESSION.toString(), false);
         long maxValueCount = maxValueCounter.getValue();*/
