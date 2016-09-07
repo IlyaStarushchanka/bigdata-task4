@@ -20,7 +20,7 @@ import java.io.IOException;
  */
 public class SecondarySortJob {
 
-    public static class SortMapper extends Mapper<LongWritable, Text, CikWritable, NullWritable> {
+    public static class SortMapper extends Mapper<LongWritable, Text, CikWritable, Text> {
 
         private final CikWritable cikWritable = new CikWritable();
 
@@ -33,19 +33,21 @@ public class SecondarySortJob {
             Long timestamp = Long.parseLong(columns[1]);
             cikWritable.setiPinyouID(iPinyouID);
             cikWritable.setTimestamp(timestamp);
-            context.write(cikWritable, NullWritable.get());
+            context.write(cikWritable, new Text(line));
         }
 
     }
 
-    public static class SortReduce extends Reducer<CikWritable, NullWritable, CikWritable, NullWritable>{
+    public static class SortReduce extends Reducer<CikWritable, Text, CikWritable, Text>{
 
         private IntWritable result = new IntWritable();
 
         @Override
-        protected void reduce(CikWritable key, Iterable<NullWritable> values,
+        protected void reduce(CikWritable key, Iterable<Text> values,
                               Context context) throws IOException, InterruptedException {
-            context.write(key, NullWritable.get());
+            for (Text text : values) {
+                context.write(key, text);
+            }
         }
     }
 
