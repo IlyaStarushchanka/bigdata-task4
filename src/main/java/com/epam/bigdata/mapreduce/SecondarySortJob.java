@@ -56,6 +56,7 @@ public class SecondarySortJob {
             if (maxCounter <= tempCounter){
                 maxCounter = tempCounter;
                 context.getCounter("DinamicCounter",key.getiPinyouID()).setValue(maxCounter);
+                context.getCounter("site-impression","1").setValue(maxCounter);
             }
         }
     }
@@ -90,9 +91,12 @@ public class SecondarySortJob {
         boolean result = job.waitForCompletion(true);
         Counters counters = job.getCounters();
 
-        for (Counter counter : counters.getGroup("DynamicCounter")) {
-                System.out.println("iPinyou ID: " + counter.getName() + ", the biggest amount of site impression: " + counter.getValue());
+        long maxSiteSmesh = counters.findCounter("site-impression","1").getValue();
 
+        for (Counter counter : counters.getGroup("DynamicCounter")) {
+            if (maxSiteSmesh == counter.getValue()) {
+                System.out.println("iPinyou ID: " + counter.getName() + ", the biggest amount of site impression: " + counter.getValue());
+            }
         }
         /*Counters counters = job.getCounters();
         Counter maxValueCounter = counters.getGroup(StreamIdType.class.getCanonicalName()).findCounter(StreamIdType.SITEIMPRESSION.toString(), false);
