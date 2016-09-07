@@ -38,7 +38,7 @@ public class SecondarySortJob {
 
     }
 
-    public static class SortReduce extends Reducer<CikWritable, Text, NullWritable, Text>{
+    public static class SortReduce extends Reducer<CikWritable, Text, CikWritable, Text>{
 
         private IntWritable result = new IntWritable();
 
@@ -46,7 +46,7 @@ public class SecondarySortJob {
         protected void reduce(CikWritable key, Iterable<Text> values,
                               Context context) throws IOException, InterruptedException {
             for (Text text : values) {
-                context.write(NullWritable.get(), text);
+                context.write(key, text);
             }
         }
     }
