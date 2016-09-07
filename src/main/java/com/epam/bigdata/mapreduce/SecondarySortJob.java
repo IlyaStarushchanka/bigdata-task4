@@ -67,9 +67,9 @@ public class SecondarySortJob {
         job.setNumReduceTasks(1);
 
         job.setMapOutputKeyClass(CikWritable.class);
-        job.setMapOutputValueClass(NullWritable.class);
+        job.setMapOutputValueClass(Text.class);
         job.setOutputKeyClass(CikWritable.class);
-        job.setOutputValueClass(NullWritable.class);
+        job.setOutputValueClass(Text.class);
 
         job.setPartitionerClass(CikPartition.class);
         job.setSortComparatorClass(CikKeyComparator.class);
