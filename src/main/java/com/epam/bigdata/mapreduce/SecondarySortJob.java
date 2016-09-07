@@ -52,7 +52,6 @@ public class SecondarySortJob {
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
-        otherArgs = new String[]{"/Users/valeryyegorov/Downloads/testin2.txt", "/Users/valeryyegorov/Downloads/testout2.txt"};
 
         if (otherArgs.length < 2) {
             System.err.println("Usage: VisitsSpendsCount <in> <out>");
