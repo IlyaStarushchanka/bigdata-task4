@@ -57,8 +57,6 @@ public class SecondarySortJob {
             if (maxCounter <= tempCounter){
                 maxCounter = tempCounter;
                 maxIPinyouID = key.getiPinyouID();
-                //context.getCounter("DinamicCounter",key.getiPinyouID()).setValue(maxCounter);
-                //context.getCounter("site-impression","1").setValue(maxCounter);
             }
         }
 
@@ -100,8 +98,6 @@ public class SecondarySortJob {
         boolean result = job.waitForCompletion(true);
         Counters counters = job.getCounters();
 
-        //long maxSiteSmesh = counters.findCounter("Site-impression","1").getValue();
-        //System.out.println("test1 " + maxSiteSmesh);
         long maxSiteSmesh = 0;
         String iPinyouID = null;
         for (Counter counter : counters.getGroup("Site-impression")) {
