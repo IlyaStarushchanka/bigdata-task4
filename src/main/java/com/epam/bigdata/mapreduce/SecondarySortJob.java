@@ -94,7 +94,7 @@ public class SecondarySortJob {
         long maxSiteSmesh = counters.findCounter("site-impression","1").getValue();
         System.out.println("test1 " + maxSiteSmesh);
 
-        for (Counter counter : counters.getGroup("DynamicCounter")) {
+        for (Counter counter : counters.getGroup("DinamicCounter")) {
             System.out.println("test2");
             if (maxSiteSmesh == counter.getValue()) {
                 System.out.println("iPinyou ID: " + counter.getName() + ", the biggest amount of site impression: " + counter.getValue());
